@@ -17,7 +17,7 @@ on:
         default: false
         type: boolean
       do_publish:
-        description: "Whether to package tarballs + cargo publish"
+        description: "Whether to package tarballs"
         required: false
         default: false
         type: boolean
@@ -38,7 +38,7 @@ on:
         default: false
         type: boolean
       do_publish:
-        description: "Package tarballs + cargo publish"
+        description: "Package tarballs"
         required: false
         default: false
         type: boolean
@@ -177,7 +177,7 @@ jobs:
             ${{ env.IMAGE_NAME }}:latest
 
   package-and-publish:
-    name: Package for Homebrew + cargo publish
+    name: Package for Homebrew
     runs-on: ubuntu-latest
     needs:
       - linux-binaries
@@ -234,9 +234,3 @@ jobs:
         with:
           name: tranquility-tarballs-${{ github.run_id }}
           path: dist/*.tar.gz
-
-      - name: Cargo publish
-        env:
-          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
-        run: |
-          cargo publish --locked

@@ -1,9 +1,15 @@
 [package]
 name = "tquil"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2024"
 license = "Apache-2.0"
 readme = "../README.md"
+description = "Set up and manage a development machine: applications, Nerd Fonts, VPS profiles and config"
+repository = "https://github.com/KiTechSoftware/tranquility"
+homepage = "https://github.com/KiTechSoftware/tranquility"
+authors = ["KiTech Software <oss@kitechsoftware.com>"]
+keywords = ["cli", "devtools", "setup", "fonts", "ssh"]
+categories = ["command-line-utilities"]
 
 
 [[bin]]
