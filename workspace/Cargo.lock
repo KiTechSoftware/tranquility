@@ -3060,6 +3060,42 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8df9b6e13f2d32c91b9bd719c00d1958837bc7dec474d94952798cc8e69eeec3"
 
 [[package]]
+name = "tquil"
+version = "0.1.0"
+dependencies = [
+ "assert_cmd",
+ "assert_fs",
+ "assert_matches",
+ "bitflags",
+ "chrono",
+ "clap",
+ "colored",
+ "dialoguer",
+ "directories",
+ "dirs",
+ "heck 0.5.0",
+ "jsonschema",
+ "libc",
+ "once_cell",
+ "os_info",
+ "predicates",
+ "quick-xml",
+ "reqwest",
+ "schemars",
+ "scriba",
+ "serde",
+ "serde_json",
+ "serde_yaml",
+ "strum",
+ "thiserror 2.0.21",
+ "tokio",
+ "toml",
+ "tracing",
+ "tracing-subscriber",
+ "zip",
+]
+
+[[package]]
 name = "tracing"
 version = "0.1.44"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3131,42 +3167,6 @@ dependencies = [
  "tracing-core",
  "tracing-log",
  "tracing-serde",
-]
-
-[[package]]
-name = "tranquility"
-version = "0.2.0"
-dependencies = [
- "assert_cmd",
- "assert_fs",
- "assert_matches",
- "bitflags",
- "chrono",
- "clap",
- "colored",
- "dialoguer",
- "directories",
- "dirs",
- "heck 0.5.0",
- "jsonschema",
- "libc",
- "once_cell",
- "os_info",
- "predicates",
- "quick-xml",
- "reqwest",
- "schemars",
- "scriba",
- "serde",
- "serde_json",
- "serde_yaml",
- "strum",
- "thiserror 2.0.21",
- "tokio",
- "toml",
- "tracing",
- "tracing-subscriber",
- "zip",
 ]
 
 [[package]]
