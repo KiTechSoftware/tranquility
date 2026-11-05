@@ -2,7 +2,7 @@
 mod tests {
     use std::path::Path;
 
-    use tranquility::engine::config::validate_file;
+    use tquil::engine::config::validate_file;
 
     // Note: These tests are disabled as the schema has been refactored.
     // Application validation is now handled through the use cases layer.

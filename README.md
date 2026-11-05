@@ -1,156 +1,77 @@
-# Tranquility (Development Environment Setup)
+# Tranquility
 
-## Usage
+Tranquility (`tquil`) is a command-line tool, written in Rust, for setting up and managing a development machine. It handles:
+
+- **Applications**: install and uninstall apps from a built-in catalog or your own applications file
+- **Nerd Fonts**: list, install, update and uninstall fonts, downloaded from the latest upstream release
+- **VPS profiles**: save SSH profiles, then connect, ping, run scripts, copy files, and import/export them
+- **Config**: validate, override and reset the `config`, `applications` and `vps` files (TOML, YAML or JSON)
+- **Diagnostics**: `info`, `doctor` and `logs` for system status and troubleshooting
+
+## Build and run
 
 ```sh
 cd workspace && cargo build
 ./target/debug/tquil --help
 ```
 
-See [docs/pages/commands.md](docs/pages/commands.md) for the full command reference.
+Or use the Makefile (a `justfile` and `taskfile.yml` expose the same targets):
 
+| Target | Purpose |
+| --- | --- |
+| `make build` / `make run` | Build or run `tquil` |
+| `make test` | Run the tests |
+| `make test-coverage` | Run the tests with coverage |
+| `make lint` / `make fmt` | Lint or format the code |
+| `make check-license` | Check license headers |
+| `make ci-check` | Run the full CI check |
+| `make docs-serve` / `make docs-build` | Serve or build the docs (MkDocs) |
+| `make image-run` | Run in a container image |
+| `make setup` / `make dev-setup` / `make update` | Set up or update the environment |
 
+## Quick start
 
-## Commits
+```sh
+tquil info
+tquil app list
+tquil font install --name FiraCode,Hack
+tquil vps add --host example.com myserver
+tquil vps connect --id myserver
+```
+
+Sample config files are in [`example/`](example/README.md). Check one with:
+
+```sh
+tquil config validate config --file example/config.toml
+```
+
+See the [command reference](docs/pages/commands.md) for every command and flag.
+
+## Project layout
+
+| Path | Contents |
+| --- | --- |
+| `workspace/` | The Rust crate (`tquil`): `cli`, `core`, `engine`, `infra` |
+| `docs/` | MkDocs site and the command reference |
+| `example/` | Sample config, applications and VPS files |
+| `scripts/` | Build, test, lint, install and release scripts |
+| `docker/` | Container image files |
+
+## Contributing
 
 Commits follow the rules in [`.cwizard.toml`](.cwizard.toml). See the [commit-wizard guide](https://commit-wizard.kitechsoftware.com/guides/getting-started/).
 
-## 📦 Version Management
+### Version management
 
-This project includes a custom Cargo subcommand, **`cargo version`**, located in:
-
-```sh
-.cargo/bin/cargo-version
-```
-
-It is a project-specific version manager that keeps **Cargo.toml** and the **VERSION** file in sync, and provides semantic version bumping.
-
----
-
-### ✨ What It Does
-
-The `cargo version` command:
-
-#### 🔍 Reads the current version
-
-* Preferentially reads from `[workspace.package]`
-* Falls back to `[package]`
-* Ensures the root `VERSION` file is always up-to-date
-* Auto-corrects if the files ever diverge
-
-#### ✏️ Sets a new version
+The project ships a custom `cargo version` subcommand in `.cargo/bin/cargo-version`. It keeps `Cargo.toml` (the source of truth) and the root `VERSION` file in sync.
 
 ```sh
-cargo version --set 1.2.3
+export PATH="$PWD/.cargo/bin:$PATH"   # once per shell, or add to your rc file
+cargo version                         # print the current version
+cargo version --set 1.2.3             # set a version (v1.2.3 also accepted)
+cargo version --bump patch            # or minor / major
 ```
 
-Updates:
+## License
 
-* `Cargo.toml`
-* `VERSION`
-* Preserves formatting, indentation, and comments
-
-#### ⬆️ Semantic version bumping
-
-```sh
-cargo version --bump patch
-cargo version --bump minor
-cargo version --bump major
-```
-
-This automatically increments the version (per semver rules) and updates all version sources.
-
-#### 🛠 Automatically creates a `VERSION` file
-
-If the file does not exist, it is created with the normalized version.
-
----
-
-### 🚀 Installation / Setup
-
-To enable the custom `cargo version` command, ensure the script is executable and in the project-local Cargo bin path.
-
-#### 1. Ensure the script exists
-
-```sh
-.cargo/bin/cargo-version
-```
-
-#### 2. Make it executable
-
-```sh
-chmod +x .cargo/bin/cargo-version
-```
-
-#### 3. Add `.cargo/bin` to your PATH (recommended)
-
-Add to your shell rc file:
-
-```sh
-export PATH="$PWD/.cargo/bin:$PATH"
-```
-
-Or for a single session:
-
-```sh
-PATH="$PWD/.cargo/bin:$PATH"
-```
-
-Now you can run:
-
-```sh
-cargo version
-```
-
-just like any built-in Cargo command.
-
----
-
-### 🧪 Usage Examples
-
-#### Print current version
-
-```sh
-cargo version
-```
-
-#### Set a specific version
-
-```sh
-cargo version --set 2.0.0
-```
-
-Accepts both `1.2.3` and `v1.2.3`.
-
-#### Bump patch
-
-```sh
-cargo version --bump patch
-```
-
-#### Bump minor
-
-```sh
-cargo version --bump minor
-```
-
-#### Bump major
-
-```sh
-cargo version --bump major
-```
-
----
-
-### 🔒 Guarantees
-
-* The version in `Cargo.toml` is treated as the **source of truth**.
-* The `VERSION` file will never drift — it is synced automatically.
-* Formatting inside `Cargo.toml` is preserved.
-* Safe, strict script execution (`set -euo pipefail`).
-
----
-
-### License
-
-Tranquility is licensed under the Apache License, Version 2.0 (SPDX: `Apache-2.0`). The full text is in [`LICENSE`](LICENSE).
+Apache License, Version 2.0 (SPDX: `Apache-2.0`). The full text is in [`LICENSE`](LICENSE).
