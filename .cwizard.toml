@@ -1,0 +1,20 @@
+[commit.scopes]
+mode = "optional"
+
+[branch]
+protected = ["main"]
+
+[check.commits]
+enforce_on = "protected_branches"
+
+[push.allow]
+protected = false
+
+[registry]
+use = "cw"
+section = "gitmoji" # Optional: specify section if multiple conventions in the same registry
+
+[registries.cw]
+url = "https://github.com/kitechsoftware/commit-wizard-registry.git"
+ref = "v0.1.0"
+sections = ["minimal", "angular", "gitmoji"] # Optional: list available sections for reference

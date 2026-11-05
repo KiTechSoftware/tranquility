@@ -1,0 +1,65 @@
+name: Pull Request
+
+on:
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-test-lint:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: workspace
+
+    container:
+      image: ghcr.io/kitechsoftware/gcr-rust:latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Cache cargo directories
+        uses: actions/cache@v6
+        with:
+          path: |
+            /usr/local/cargo/registry
+            /usr/local/cargo/git
+            workspace/target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: ${{ runner.os }}-cargo-
+
+      - name: Format Check
+        run: cargo fmt --all --check
+
+      - name: Clippy (strict)
+        run: cargo clippy --all-targets --all-features -- -D warnings
+
+      - name: Tests
+        run: cargo test --all-targets --all-features
+
+      - name: Release Build (deny unsafe code)
+        run: RUSTFLAGS="-Dunsafe_code" cargo build --release
+
+  # security:
+  #   needs: build-test-lint
+  #   runs-on: ubuntu-latest
+
+  #   container:
+  #     image: ghcr.io/kitechsoftware/gcr-rust:latest
+
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v7
+
+  #     - name: Run full security suite
+  #       run: security-check --no-fail
+
+  #     - name: Upload security summary
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: security-summary
+  #         path: security-summary.md
